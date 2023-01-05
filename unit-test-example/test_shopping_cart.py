@@ -1,8 +1,28 @@
 from shopping_cart import ShoppingCart
 import pytest
 
-def test_can_add_item_to_cart():
-    cart = ShoppingCart(5)
+
+
+###################################################
+##  CREATE FIXTURES TO SET UP CONTEXT FOR TESTS  ##
+###################################################
+
+# use these fixtures by passing in as arguments to the tests
+# These are created new each time a test is run; i.e. fixtures are not reused across tests
+
+
+@pytest.fixture
+def cart():
+    # Include all setup for the cart here...
+    return ShoppingCart(5)
+    
+
+
+#################################
+##  INDIVIDUAL TEST FUNCTIONS  ##
+#################################
+
+def test_can_add_item_to_cart(cart):
     cart.add('apple')
     
     # assert is a python keyword; will check whether or not statement is True
@@ -10,14 +30,14 @@ def test_can_add_item_to_cart():
     # if statement is false, line will throw an exception (evaluate to FAIL)
     assert cart.size() == 1
 
-def test_when_item_added_then_cart_contains_item():
-    cart = ShoppingCart(5)
+
+def test_when_item_added_then_cart_contains_item(cart):
     cart.add('apple')
 
     assert 'apple' in cart.get_items()
 
-def test_when_add_more_than_max_items_should_fail():
-    cart = ShoppingCart(5)
+
+def test_when_add_more_than_max_items_should_fail(cart):
     for _ in range(5):
         cart.add('apple')
     
@@ -27,8 +47,8 @@ def test_when_add_more_than_max_items_should_fail():
     with pytest.raises(OverflowError):
         cart.add('apple')
 
-def test_can_get_total_price():
-    cart = ShoppingCart(5)
+
+def test_can_get_total_price(cart):
     cart.add('apple')
     cart.add('orange')
     
