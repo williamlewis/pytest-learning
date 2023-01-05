@@ -1,4 +1,6 @@
 from shopping_cart import ShoppingCart
+from item_database import ItemDatabase
+from unittest.mock import Mock
 import pytest
 
 
@@ -52,10 +54,18 @@ def test_can_get_total_price(cart):
     cart.add('apple')
     cart.add('orange')
     
-    # need to set up price_map argument to test function that will take this as an input
-    price_map = {
-        'apple': 1.0,
-        'orange': 2.0
-    }
+    # initialize an instance of the item database class, from a separate file in this directory
+    item_database = ItemDatabase()
 
-    assert cart.get_total_price(price_map) == 3.0
+    # account for various values to be tested with Mock object
+    def mock_get_item(item: str):
+        if item == 'apple':
+            return 1.0
+        if item == 'orange':
+            return 2.0
+
+    # MOCK the .get() method of the item_database class, using Mock object from Python's unittest.mock built-in module
+    # effectively mocks the behavior of our item_database without it actually being implemented yet
+    item_database.get = Mock(side_effect=mock_get_item)
+
+    assert cart.get_total_price(item_database) == 3.0
