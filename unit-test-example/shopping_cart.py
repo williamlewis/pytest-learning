@@ -2,17 +2,26 @@ from typing import List
 
 
 class ShoppingCart:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, max_size: int) -> None:
+        self.items: List[str] = []
+        self.max_size = max_size
     
     def add(self, item: str):
-        pass
+        if self.size() == self.max_size:
+            raise OverflowError('Cannot add more items.')
+
+        self.items.append(item)
 
     def size(self) -> int:
-        return 0
+        return len(self.items)
     
     def get_items(self) -> List[str]:
-        pass
+        return self.items
 
     def get_total_price(self, price_map):
-        pass
+        # need to pass in price_map argument, which doesn't have an explicit type & needs to be passed in from a 3rd-party / external source
+        total_price = 0.0
+        for item in self.items:
+            total_price += price_map.get(item) # note: .get() is a python dict method to return VAL of a key, not custom to current class
+
+        return total_price
